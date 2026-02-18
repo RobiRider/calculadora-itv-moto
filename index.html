@@ -3,39 +3,34 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
-    <title>Calculadora ITV Moto - RobiRider</title>
+    <title>ITV Moto - RobiRider</title>
     
-    <!-- PWA Config -->
+    <!-- Meta etiquetas para instalación forzada en Edge/Chrome -->
     <meta name="theme-color" content="#0f172a">
     <meta name="mobile-web-app-capable" content="yes">
     <meta name="apple-mobile-web-app-capable" content="yes">
-    <link rel="manifest" id="manifest-placeholder">
+    <meta name="application-name" content="RobiRider">
+    <meta name="apple-mobile-web-app-title" content="RobiRider">
 
     <script src="https://cdn.tailwindcss.com"></script>
     <style>
-        :root {
-            --primary: #e11d48;
-            --primary-dark: #be123c;
-        }
-        
+        :root { --primary: #e11d48; }
         body { 
             background-color: #f1f5f9; 
-            font-family: ui-sans-serif, system-ui, -apple-system, sans-serif; 
+            font-family: system-ui, -apple-system, sans-serif; 
             margin: 0;
             display: flex;
             justify-content: center;
             min-height: 100vh;
         }
-
-        /* Modo Oscuro Automático */
         @media (prefers-color-scheme: dark) {
             body { background-color: #020617; color: #f8fafc; }
             .card { background: #1e293b !important; color: white; }
             input { background: #0f172a !important; color: white !important; border-color: #334155 !important; }
             .bg-slate-50 { background: #334155 !important; }
             .text-slate-400 { color: #94a3b8 !important; }
+            .border-slate-200 { border-color: #334155 !important; }
         }
-
         .card { 
             background: white; 
             width: 100%; 
@@ -44,22 +39,16 @@
             display: flex;
             flex-direction: column;
         }
-
-        .header-img-container { 
+        .header-img { 
             background: #000; 
             height: 160px; 
-            display: flex; 
-            align-items: center; 
-            justify-content: center; 
             border-bottom: 3px solid var(--primary); 
             overflow: hidden;
+            display: flex;
+            align-items: center;
+            justify-content: center;
         }
-        .header-img-container img { 
-            width: 100%;
-            height: 100%;
-            object-fit: cover; 
-        }
-
+        .header-img img { width: 100%; height: 100%; object-fit: cover; }
         input { 
             font-size: 18px !important; 
             text-align: center; 
@@ -69,43 +58,29 @@
             padding: 0.6rem; 
             width: 100%; 
             font-weight: 800;
-            color: #1e293b;
-            transition: border-color 0.2s;
         }
-        input:focus { 
-            border-color: var(--primary); 
-            outline: none; 
+        input::-webkit-outer-spin-button,
+        input::-webkit-inner-spin-button {
+            -webkit-appearance: none;
+            margin: 0;
         }
-
-        label { 
-            font-size: 10px; 
-            font-weight: 900; 
-            color: #64748b; 
-            text-transform: uppercase; 
-            letter-spacing: 0.1em;
-            margin-bottom: 4px; 
-            display: block; 
-        }
-
         .btn-calc {
             background: var(--primary);
             color: white;
             font-weight: 900;
             text-transform: uppercase;
-            font-size: 12px;
-            letter-spacing: 0.1em;
             padding: 1rem;
             border-radius: 0.75rem;
             width: 100%;
-            box-shadow: 0 10px 15px -3px rgba(225, 29, 72, 0.3);
+            border: none;
+            cursor: pointer;
+            transition: transform 0.1s;
         }
-
+        .btn-calc:active { transform: scale(0.98); }
         .btn-share {
             background: #25d366;
             color: white;
             font-weight: 800;
-            font-size: 11px;
-            text-transform: uppercase;
             padding: 0.8rem;
             border-radius: 0.75rem;
             width: 100%;
@@ -114,50 +89,21 @@
             justify-content: center;
             gap: 8px;
             margin-top: 12px;
-        }
-
-        .table-section {
-            border-top: 1px solid #e2e8f0;
-            padding-top: 1rem;
-            margin-top: 1rem;
-        }
-
-        details summary {
+            border: none;
             cursor: pointer;
-            font-weight: 800;
-            font-size: 11px;
-            text-transform: uppercase;
-            color: var(--primary);
-            list-style: none;
-            display: flex;
-            align-items: center;
-            gap: 5px;
         }
-        
-        .ref-table {
-            width: 100%;
-            font-size: 10px;
-            margin-top: 8px;
-            border-collapse: collapse;
-        }
-        .ref-table th, .ref-table td {
-            border: 1px solid #e2e8f0;
-            padding: 4px;
-            text-align: center;
-        }
-        @media (prefers-color-scheme: dark) {
-            .ref-table th, .ref-table td { border-color: #475569; }
-            details summary { color: #fb7185; }
-        }
+        .ref-table { width: 100%; font-size: 10px; border-collapse: collapse; margin-top: 8px; }
+        .ref-table th, .ref-table td { border: 1px solid #e2e8f0; padding: 6px; text-align: center; }
     </style>
 </head>
 <body>
 
     <div class="card">
-        <div class="header-img-container">
-            <img src="https://files.oaiusercontent.com/file-K98K0HlV2A8Yf5S5A7K_X5V" 
-                 alt="RobiRider" 
-                 onerror="this.src='https://images.unsplash.com/photo-1558981806-ec527fa84c39?w=400'">
+        <div class="header-img">
+            <img id="main-logo" 
+                 src="https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=800&auto=format&fit=crop" 
+                 alt="RobiRider"
+                 onerror="this.src='https://images.unsplash.com/photo-1568772585407-9361f9bf3a87?q=80&w=800'">
         </div>
         
         <div class="bg-slate-900 py-3 text-center">
@@ -168,68 +114,79 @@
         <div class="p-5 flex-grow space-y-5">
             <div class="space-y-4">
                 <section>
-                    <label>Medida en Ficha Técnica</label>
-                    <div class="grid grid-cols-3 gap-3">
-                        <div><input type="number" id="w1" value="" placeholder="Ancho"></div>
-                        <div><input type="number" id="p1" value="" placeholder="Perfil"></div>
-                        <div><input type="number" id="l1" value="" placeholder="Llanta"></div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase">Medida Ficha Técnica</label>
+                    <div class="grid grid-cols-3 gap-3 mt-1">
+                        <input type="number" id="w1" placeholder="Ancho">
+                        <input type="number" id="p1" placeholder="Perfil">
+                        <input type="number" id="l1" placeholder="Llanta">
                     </div>
                 </section>
                 <section>
-                    <label>Medida que quieres poner</label>
-                    <div class="grid grid-cols-3 gap-3">
-                        <div><input type="number" id="w2" value="" placeholder="Ancho"></div>
-                        <div><input type="number" id="p2" value="" placeholder="Perfil"></div>
-                        <div><input type="number" id="l2" value="" placeholder="Llanta"></div>
+                    <label class="text-[10px] font-bold text-slate-400 uppercase">Medida Alternativa</label>
+                    <div class="grid grid-cols-3 gap-3 mt-1">
+                        <input type="number" id="w2" placeholder="Ancho">
+                        <input type="number" id="p2" placeholder="Perfil">
+                        <input type="number" id="l2" placeholder="Llanta">
                     </div>
                 </section>
             </div>
 
-            <button onclick="calc()" class="btn-calc">
-                Verificar Neumático
-            </button>
+            <button onclick="calc()" class="btn-calc">Verificar Ahora</button>
 
+            <!-- Resultados y Enlace a Tablas -->
             <div id="res" class="hidden space-y-3 pt-2">
                 <div id="status" class="p-3 rounded-xl text-center border-2 font-black italic text-xs uppercase"></div>
                 
                 <div class="bg-slate-50 p-3 rounded-xl border border-slate-200 flex justify-between items-center px-5">
-                    <div class="text-left">
-                        <p class="text-[8px] font-black text-slate-400 uppercase">Desviación</p>
-                        <p id="diff" class="text-2xl font-black leading-none"></p>
+                    <div>
+                        <p class="text-[8px] font-bold text-slate-400 uppercase leading-none">Diferencia</p>
+                        <p id="diff" class="text-2xl font-black"></p>
                     </div>
-                    <div class="text-right">
-                        <p class="text-[9px] font-bold text-slate-400 italic">Legal: ±3.00%</p>
-                    </div>
+                    <p class="text-[9px] font-bold text-slate-400 italic">Límite legal ±3%</p>
                 </div>
-                
-                <button onclick="share()" class="btn-share">
-                    <svg style="width:18px;height:18px" viewBox="0 0 24 24"><path fill="currentColor" d="M12.04 2c-5.46 0-9.91 4.45-9.91 9.91 0 1.75.46 3.45 1.32 4.95L2.05 22l5.25-1.38c1.45.79 3.08 1.21 4.74 1.21 5.46 0 9.91-4.45 9.91-9.91 0-2.65-1.03-5.14-2.9-7.01A9.816 9.816 0 0 0 12.04 2m.01 1.67c2.2 0 4.26.86 5.82 2.42 1.56 1.56 2.42 3.63 2.42 5.83 0 4.54-3.7 8.23-8.24 8.23-1.48 0-2.93-.39-4.19-1.15l-.3-.17-3.12.82.83-3.04-.2-.32a8.188 8.188 0 0 1-1.26-4.38c0-4.54 3.7-8.24 8.24-8.24m-3.53 4.75c-.19 0-.52.07-.79.37-.27.3-.86.85-.86 2.07 0 1.22.89 2.4 1.01 2.56.12.17 1.75 2.67 4.23 3.74.59.26 1.05.41 1.41.52.59.19 1.13.16 1.56.1.48-.07 1.47-.6 1.67-1.18.21-.58.21-1.07.14-1.18-.06-.1-.23-.17-.48-.3s-1.47-.73-1.69-.82c-.23-.09-.39-.14-.56.12-.17.25-.64.81-.78.97-.14.17-.29.19-.54.06-.25-.13-1.06-.39-2.03-1.25-.75-.67-1.26-1.5-1.4-1.76-.14-.25-.01-.39.11-.51.11-.11.25-.3.38-.45.13-.15.17-.25.26-.42.09-.17.04-.32-.02-.45-.06-.13-.56-1.35-.77-1.84-.2-.48-.4-.41-.56-.42-.14 0-.3-.01-.47-.01Z"/></svg>
-                    Compartir Resultado
-                </button>
+
+                <!-- Aviso de Carga y Velocidad -->
+                <div class="bg-amber-50 dark:bg-amber-900/20 border border-amber-200 dark:border-amber-800 p-3 rounded-xl">
+                    <p class="text-[9px] text-amber-800 dark:text-amber-200 font-bold uppercase mb-1">⚠️ Importante:</p>
+                    <p class="text-[10px] text-amber-700 dark:text-amber-300 leading-tight">
+                        El neumático nuevo debe tener un <b>Índice de Carga</b> y <b>Código de Velocidad</b> igual o superior al de la ficha técnica.
+                    </p>
+                    <button onclick="document.getElementById('ref-details').open = true; document.getElementById('ref-details').scrollIntoView({behavior: 'smooth'})" 
+                            class="text-[9px] font-black text-amber-900 dark:text-amber-100 underline mt-2 uppercase">
+                        Ver tablas de índices
+                    </button>
+                </div>
+
+                <button onclick="share()" class="btn-share">Compartir por WhatsApp</button>
             </div>
 
-            <!-- Tablas de Referencia -->
-            <div class="table-section space-y-3">
-                <details>
-                    <summary>📊 Códigos de Velocidad</summary>
-                    <table class="ref-table">
-                        <tr class="bg-slate-100 dark:bg-slate-700"><th>Letra</th><th>Km/h</th><th>Letra</th><th>Km/h</th></tr>
-                        <tr><td>P</td><td>150</td><td>S</td><td>180</td></tr>
-                        <tr><td>H</td><td>210</td><td>V</td><td>240</td></tr>
-                        <tr><td>W</td><td>270</td><td>(W)</td><td>>270</td></tr>
-                    </table>
-                </details>
-                
-                <details>
-                    <summary>⚖️ Índices de Carga (kg)</summary>
-                    <table class="ref-table">
-                        <tr class="bg-slate-100 dark:bg-slate-700"><th>Idx</th><th>Kg</th><th>Idx</th><th>Kg</th></tr>
-                        <tr><td>50</td><td>190</td><td>58</td><td>236</td></tr>
-                        <tr><td>60</td><td>250</td><td>68</td><td>315</td></tr>
-                        <tr><td>73</td><td>365</td><td>80</td><td>450</td></tr>
-                    </table>
-                </details>
-            </div>
+            <details id="ref-details" class="pt-2 border-t border-slate-200">
+                <summary class="cursor-pointer font-bold text-[10px] text-rose-600 uppercase flex items-center gap-2">
+                    📋 Tablas de Carga y Velocidad
+                </summary>
+                <div class="mt-4 space-y-4">
+                    <div>
+                        <p class="text-[9px] font-bold uppercase text-slate-500 mb-1">Códigos de Velocidad</p>
+                        <table class="ref-table">
+                            <tr class="bg-slate-100 dark:bg-slate-800"><th>Letra</th><th>Km/h</th><th>Letra</th><th>Km/h</th></tr>
+                            <tr><td>P</td><td>150</td><td>S</td><td>180</td></tr>
+                            <tr><td>T</td><td>190</td><td>H</td><td>210</td></tr>
+                            <tr><td>V</td><td>240</td><td>W</td><td>270</td></tr>
+                            <tr><td>(W)</td><td>>270</td><td>Y</td><td>300</td></tr>
+                        </table>
+                    </div>
+                    <div>
+                        <p class="text-[9px] font-bold uppercase text-slate-500 mb-1">Índices de Carga (Kg por Neumático)</p>
+                        <table class="ref-table">
+                            <tr class="bg-slate-100 dark:bg-slate-800"><th>Idx</th><th>Kg</th><th>Idx</th><th>Kg</th></tr>
+                            <tr><td>50</td><td>190</td><td>54</td><td>212</td></tr>
+                            <tr><td>58</td><td>236</td><td>62</td><td>265</td></tr>
+                            <tr><td>66</td><td>300</td><td>70</td><td>335</td></tr>
+                            <tr><td>74</td><td>375</td><td>80</td><td>450</td></tr>
+                        </table>
+                    </div>
+                </div>
+            </details>
         </div>
 
         <footer class="bg-slate-50 py-3 text-center border-t border-slate-200">
@@ -239,20 +196,28 @@
 
     <script>
         // PWA Manifest
-        const manifest = {
+        const myManifest = {
             "name": "RobiRider ITV",
-            "short_name": "RobiITV",
-            "start_url": "./index.html",
+            "short_name": "RobiRider",
+            "start_url": ".",
             "display": "standalone",
             "background_color": "#0f172a",
             "theme_color": "#e11d48",
-            "icons": [{"src": "https://files.oaiusercontent.com/file-K98K0HlV2A8Yf5S5A7K_X5V", "sizes": "512x512", "type": "image/png"}]
+            "icons": [{
+                "src": "https://images.unsplash.com/photo-1558981806-ec527fa84c39?q=80&w=512",
+                "sizes": "512x512",
+                "type": "image/png"
+            }]
         };
-        const blob = new Blob([JSON.stringify(manifest)], {type:'application/json'});
-        document.getElementById('manifest-placeholder').href = URL.createObjectURL(blob);
+        const stringManifest = JSON.stringify(myManifest);
+        const blob = new Blob([stringManifest], {type: 'application/json'});
+        const manifestURL = URL.createObjectURL(blob);
+        const link = document.createElement('link');
+        link.rel = 'manifest';
+        link.href = manifestURL;
+        document.head.appendChild(link);
 
-        let shareMsg = "";
-
+        let msg = "";
         function calc() {
             const get = (id) => parseFloat(document.getElementById(id).value);
             const w1=get('w1'), p1=get('p1'), l1=get('l1'), w2=get('w2'), p2=get('p2'), l2=get('l2');
@@ -265,29 +230,17 @@
             const ok = Math.abs(diff) <= 3;
 
             document.getElementById('res').classList.remove('hidden');
-            const diffSpan = document.getElementById('diff');
-            diffSpan.innerText = (diff > 0 ? "+" : "") + diff.toFixed(2) + "%";
-            diffSpan.className = "text-2xl font-black " + (ok ? "text-green-600" : "text-rose-600");
+            document.getElementById('diff').innerText = (diff > 0 ? "+" : "") + diff.toFixed(2) + "%";
+            document.getElementById('diff').className = "text-2xl font-black " + (ok ? "text-green-600" : "text-rose-600");
             
-            const st = document.getElementById('status');
-            st.innerText = ok ? "✅ Equivalente (Apto)" : "❌ No Equivalente";
-            st.className = "p-3 rounded-xl text-center border-2 " + 
-                (ok ? "border-green-500 bg-green-50 text-green-600" : "border-rose-600 bg-rose-50 text-rose-600");
-
-            // Preparar mensaje WhatsApp
-            shareMsg = `*RobiRider ITV Check*%0A---%0A*Original:* ${w1}/${p1}-${l1}%0A*Nueva:* ${w2}/${p2}-${l2}%0A*Diferencia:* ${(diff > 0 ? "+" : "")}${diff.toFixed(2)}%25%0A*Resultado:* ${ok ? "✅ APTO" : "❌ NO APTO"}%0A%0A_Recuerda revisar carga y velocidad!_`;
+            document.getElementById('status').innerText = ok ? "✅ Equivalente" : "❌ No Apto";
+            document.getElementById('status').className = "p-3 rounded-xl text-center border-2 " + (ok ? "border-green-500 bg-green-50 text-green-600" : "border-rose-600 bg-rose-50 text-rose-600");
             
-            // Scroll suave al resultado en móviles
-            setTimeout(() => {
-                document.getElementById('res').scrollIntoView({ behavior: 'smooth' });
-            }, 100);
+            msg = `*RobiRider ITV*%0A*Medida:* ${w1}/${p1}-${l1}%0A*Nueva:* ${w2}/${p2}-${l2}%0A*Diff:* ${diff.toFixed(2)}%25%0A*Estado:* ${ok?'APTO ✅':'NO APTO ❌'}`;
+            
+            window.scrollTo({ top: document.body.scrollHeight, behavior: 'smooth' });
         }
-
-        function share() {
-            if (shareMsg) {
-                window.open(`https://api.whatsapp.com/send?text=${shareMsg}`, '_blank');
-            }
-        }
+        function share() { if(msg) window.open(`https://api.whatsapp.com/send?text=${msg}`, '_blank'); }
     </script>
 </body>
 </html>
